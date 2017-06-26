@@ -1,0 +1,36 @@
+[debug] [2017-06-24T05:12:09.957Z] ----------------------------------------------------------------------
+[debug] [2017-06-24T05:12:09.963Z] Command:      /usr/local/bin/node /usr/local/bin/firebase serve
+[debug] [2017-06-24T05:12:09.964Z] CLI Version:  3.9.1
+[debug] [2017-06-24T05:12:09.964Z] Platform:     darwin
+[debug] [2017-06-24T05:12:09.964Z] Node Version: v5.0.0
+[debug] [2017-06-24T05:12:09.966Z] Time:         Fri Jun 23 2017 22:12:09 GMT-0700 (PDT)
+[debug] [2017-06-24T05:12:09.966Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2017-06-24T05:12:10.031Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2017-06-24T05:12:10.032Z] > authorizing via signed-in user
+[debug] [2017-06-24T05:12:10.035Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2017-06-24T05:12:10.036Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token { refresh_token: '1/VSoAGdOWW-DmkhQ-dgOJEr6oYRwWHEvgkyDj8bnDjyQ',
+  client_id: '563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com',
+  client_secret: 'j9iVZfS8kkCEFUPaAeJV0sAi',
+  grant_type: 'refresh_token',
+  scope: 'email https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/cloudplatformprojects.readonly https://www.googleapis.com/auth/firebase openid' } 
+ Fri Jun 23 2017 22:12:10 GMT-0700 (PDT)
+[debug] [2017-06-24T05:12:10.243Z] <<< HTTP RESPONSE 200
+[debug] [2017-06-24T05:12:10.247Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/findmyclassmates-1adf9  
+ Fri Jun 23 2017 22:12:10 GMT-0700 (PDT)
+[debug] [2017-06-24T05:12:10.946Z] <<< HTTP RESPONSE 200
+[debug] [2017-06-24T05:12:10.948Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/findmyclassmates-1adf9/tokens  
+ Fri Jun 23 2017 22:12:10 GMT-0700 (PDT)
+[debug] [2017-06-24T05:12:11.542Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from '/Users/michaelwan/Desktop/findmyclassmates/webapp'...
+[info] 
+[debug] [2017-06-24T05:12:11.549Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/findmyclassmates-1adf9  
+ Fri Jun 23 2017 22:12:11 GMT-0700 (PDT)
+[debug] [2017-06-24T05:12:11.982Z] <<< HTTP RESPONSE 200
+[debug] [2017-06-24T05:12:11.984Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/282768540097/clients/_:getWebAppConfig  
+ Fri Jun 23 2017 22:12:11 GMT-0700 (PDT)
+[debug] [2017-06-24T05:12:12.551Z] <<< HTTP RESPONSE 200
+[debug] [2017-06-24T05:12:12.883Z] TypeError: Cannot read property 'public' of undefined
+[error] 
+[error] Error: An unexpected error has occurred.
