@@ -26,6 +26,11 @@ function findStudentsIn(school, class_val, period) {
 		});
 	});
 }
+function _w(param) {
+	ret = param.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");	
+	return ret;
+}
+
 // function addToClass(school, class_val) {
 
 // }

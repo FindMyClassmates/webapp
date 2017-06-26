@@ -213,7 +213,7 @@
 		function addSchool() {
 			val = document.getElementById('add_school').value;
 			if (val != "") {
-				document.getElementById('languages').innerHTML += "<option value = '" + val + "'>"
+				document.getElementById('languages').innerHTML += "<option value = '" + _w(val) + "'>"
 				firebase.database().ref("school/" + val + "/").update({
 					__ignore: "_"
 				})
@@ -376,7 +376,7 @@
 				if(snapshot.numChildren() == 0) {
 					period = c.substring(c.search("&period=") + "&period=".length);
 					classname = c.substring(0, c.search("&period="));
-					x = ("<h5><u>" + classname + ", Period " + period + ":</u><br></h5>");
+					x = ("<h5><u>" + _w(classname) + ", Period " + _w(period) + ":</u><br></h5>");
 					//console.log(x);
 					classdiv.innerHTML += (x);
 					classdiv.innerHTML += ("<h6>None</h6>");
@@ -385,7 +385,7 @@
 					if(x === "init") {
 						period = c.substring(c.search("&period=") + "&period=".length);
 						classname = c.substring(0, c.search("&period="));
-						x = ("<h5><u>" + classname + ", Period " + period + ":</u></h5>");
+						x = ("<h5><u>" + _w(classname) + ", Period " + _w(period) + ":</u></h5>");
 						// console.log(x);
 						classdiv.innerHTML += (x);
 					}
@@ -410,7 +410,7 @@
 							onBlackList = true;
 						if(!onBlackList) {
 							if (!curr.includes("<")) {
-								classdiv.innerHTML += (" " + curr + "<br>");
+								classdiv.innerHTML += (" " + _w(curr) + "<br>");
 							}
 						}
 					}
@@ -447,7 +447,7 @@
 				classname = c.substring(0, c.search("&period="))
 				console.log("Period: " + period);
 				// document.write("<br><br>" + classname + ", Period " + period + "<br><br>");
-				classdiv.innerHTML += ("<h5><u>" + classname + ", Period " + period + ":</u><br></h5>");
+				classdiv.innerHTML += ("<h5><u>" + _w(classname) + ", Period " + _w(period) + ":</u><br></h5>");
 				var last = "init"
 				var curr = "init"
 				for(var i = 1; i < l+1; i++)
@@ -474,9 +474,10 @@
 							onBlackList = true;
 						if(curr === null || curr === "null")
 							onBlackList = true;
-						if(!onBlackList)
-						{
-							classdiv.innerHTML += (" " + curr + "<br>");
+						if(!onBlackList) {
+							if (!curr.includes("<")) {
+								classdiv.innerHTML += (" " + _w(curr) + "<br>");
+							}
 						}
 					}
 					last = curr;
