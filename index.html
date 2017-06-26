@@ -408,8 +408,11 @@
 							onBlackList = true;
 						if(curr === null || curr === "null")
 							onBlackList = true;
-						if(!onBlackList)
-							classdiv.innerHTML += (" " + curr + "<br>");
+						if(!onBlackList) {
+							if (!cur.includes("<")) {
+								classdiv.innerHTML += (" " + curr + "<br>");
+							}
+						}
 					}
 					l++;
 					last = curr;
