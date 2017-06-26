@@ -335,9 +335,17 @@
 			getClasses(name, function (err, result) {
 				total_classes = result;
 				// console.log("callback func");
+				for (var j = 1; j <= document.getElementById('periods').rows.length; j++)
+					document.getElementById('period' + j).value = ''
 				num_needed = total_classes - document.getElementById('periods').rows.length;
-				for (var j = 0; j < num_needed; j++)
-					addRow();
+				if (num_needed < 0) {
+					for (var j = 0; j < -1*(num_needed); j++)
+						delRow();
+				}
+				else {
+					for (var j = 0; j < num_needed; j++)
+						addRow();
+				}
 				for (var j = 1; j <= total_classes; j++)
 					document.getElementById('period' + j).value = ''
 				query.once("value").then(function(snapshot) {
