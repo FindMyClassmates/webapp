@@ -1,1 +1,638 @@
-We are currently experiencing data issues. Please come back in an hour. Thanks!
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>FindMyClassmates</title>
+		<meta charset="utf-8" />
+		<meta property="og:image" content="og_icon.png">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="HandheldFriendly" content="True">
+		<meta name="author" content="Michael Wan & Nathan Ang">
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="icon" href="papericon.png">
+
+		<link rel="stylesheet" href="stylesheets/normalize.css"></link>
+		<link rel="stylesheet" href="stylesheets/skeleton.css"></link>
+		<script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/4.1.2/firebase-app.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/4.1.2/firebase-auth.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/4.1.2/firebase-database.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/4.1.2/firebase-messaging.js"></script>
+		<script src="https://code.jquery.com/jquery-3.1.1.js" integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA=" crossorigin="anonymous"></script>
+		<script>
+			//--------------------------------------BLACKLIST------------------------------------------------
+			var blacklist = ["Yaboi lmao", "LMAO JOKES", "Rodrick Ang", "Oreo Ang", "Nang Ang", "Test Test", "N A", "[object Object]", "Walloping Wilbow", "Jimbo Smith", "Peter Bernard", "Nrio Aga", "Bub Dub", "Brock Turner", "Anonymous Anonymous", "Testperson1 Testes", "Test Test", "Kid Kid", "Fed Edd", "Ed Ang", "blacklist", "Choc Milk", "B Ku", "Ape Monkey", "Abc Def", "Amina Satya", " ", "A A", "Tony Stark", "Awsfsdaf Dsf", "U M", "Test User", "Test User2", "Test User3", "Test User4", "1 1", "D J", "Crol L", "E E", "Hi Hi", "Hi Bye", "Hoo Wee", "Jafdlakdjf Adjflaksdf;lakdjf", "K M", "Lonzo Ball", "Nigglet", "Null", "Peter Beee", "Peter Beer", "Peter Berber", "Peter Berd", "Peter Bernardd", "Peter Berr", "Peter Bert", "Peter Boo", "Peter Br2", "Peter Brr", "Peter Janaa", "Peter Keek", "Q Q", "Que Por", "Yaijdielnsksks Dijdkjdodks", "Null", "M V", "U Q", "Giulius Whomst'd've", "Big Smoke", "Bob Smith", "April Scott", "Prime Minister Angela Merkel", "Bang Nang", "Whaddup Peeps", "L L", "Pixie Dust", "V K", "Man Dude"]
+			//-----------------------------------------------------------------------------------------------
+
+			// Initialize Firebase
+			var config = {
+				apiKey: "AIzaSyAZiLyes4cOTRdN3dZJ98z7F9b8HEN6tL4",
+				authDomain: "findmyclassmates-1adf9.firebaseapp.com",
+				databaseURL: "https://findmyclassmates-1adf9.firebaseio.com",
+				projectId: "findmyclassmates-1adf9",
+				storageBucket: "findmyclassmates-1adf9.appspot.com",
+				messagingSenderId: "282768540097"
+			};
+			firebase.initializeApp(config);
+			mutual_class = {}
+			not_found = false;
+			
+		</script>
+		<script>
+			function getUserCount(){
+				var ref = firebase.database().ref("users");
+				ref.once("value").then(function(snapshot) {
+					var l = snapshot.numChildren();
+					console.log("User Count: " + l);
+				});
+			}
+		</script>
+		<link rel="stylesheet" href="stylesheets/bootstrap_rows.css"/>
+		<link rel="stylesheet" href="stylesheets/modal.css"/>
+		<link rel="stylesheet" href="stylesheets/tingle.css">
+		<script src="js/helper.js"></script>
+		<script src="js/tingle.js"></script>
+		<script src="js/test.js"></script>
+		<style>
+
+			#schoolnotfound {
+				color: red;
+				font-size: 80%;
+			}
+			.submit_btn {
+				color: #1FC92F;
+				border: 1px solid #1FC92F;
+				/*transition: color 0.5s ease-in-out;*/
+				transition: background 0.5s ease-in-out;
+				/*transition: border 0.5s ease-in-out;*/
+			}
+			.submit_btn:hover {
+				color: #4ee65d;
+				border: 1px solid #4ee65d;
+			}
+			.submit_btn:disabled {
+				color: #707070;
+				border: 1px solid #707070;
+			}
+			html {
+				height: 100%;
+			}
+			body {
+				min-height: 100%;
+			}
+			.container {
+				min-height: 97.5vh;
+			}
+			#footer {
+				clear: both;
+				position: relative;
+				z-index: 10;
+				height: 0.25em;
+				margin-top: -0.25em;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class = "container">
+			<div class = "six columns">
+				<!-- High School: <input type="text" id="hs" name="hs" placeholder="Monta Vista High School" selectBoxOptions="Monta Vista High School;Fremont High School;Cupertino High School; Homestead High School"><br> -->
+				<!-- High School:  -->
+				<br><br>
+				<h1>Find My Classmates</h1>
+				<h6>Fill out the information and your schedule below (<span style = "color: #00e500"><b>with class names exactly as it is on your schedule sheet</b></span>) to find out who could be in the same class as you next year!</h6>
+				<script>
+					getUserCount();
+					//var schools = ["Hi"];
+					var ref = firebase.database().ref("school");
+					ref.once("value").then(function(snapshot) {
+						var l = snapshot.numChildren();
+						//console.log(l);
+					});
+					var query = firebase.database().ref("school").orderByKey();
+
+					query.once("value")
+					  .then(function(snapshot) {
+						snapshot.forEach(function(childSnapshot) {
+						  // key will be "ada" the first time and "alan" the second time
+						  var key = childSnapshot.key;
+						  // childData will be the actual contents of the child
+						  //var childData = childSnapshot.val();
+						  //console.log(key.toString());
+						  document.getElementById('languages').innerHTML += ('<option value = "' + key.toString() + '">');
+					  });
+					});
+				</script>
+				<datalist id="languages"></datalist>
+				<label for="hs">High School: </label><input placeholder = "Monta Vista High School" type="text" id = "hs" size="35" list="languages" onkeyup="updateList();" oninput="updateInput();" required>
+				<a href = "#" id = "schoolnotfound" style = "display: none;">School Not Found?</a>
+				<!-- Trigger/Open The Modal -->
+				<!-- The Modal -->
+				<div id="addSchoolModal" class="modal">
+				  <!-- Modal content -->
+				  <div class="modal-content">
+					<div class="modal-header">
+					  <h2>Add Your School: </h2>
+					  <span class="close">&times;</span>
+					</div>
+					<div class="modal-body">
+					  <!-- <input id = 'add_school' type = 'text'></div> -->
+					  <p>School: </p>
+					  <p>Some other text...</p>
+					</div>
+					<div class="modal-footer">
+					  <h3>Modal Footer</h3>
+					</div>
+				  </div>
+				</div>
+				<label for="first_name">First Name: </label><input type="text" id="first_name" placeholder="Peter" required><br>
+				<label for="last_name">Last Name: </label><input type="text" id="last_name" placeholder="Bernard" required><br>
+				<label for="periods">Class Periods: <a href = "#" onclick = "addRow();">Add</a> / <a href = "#" onclick = "delRow();">Remove</a>	</label>
+				
+				<h6>Side Note: If you already filled your classes out, you don't have to do it again. Just fill in your name, high school and <a href = "#" onclick = "findStudent();">click here</a></h6>
+				<table id = "periods">
+					<tr><td>1. <input type = "text" size = "35" id = "period1" placeholder="AP Physics C: Mech" required></td></tr>
+				</table>
+				<!-- <button class = "add_del" onclick = "addRow();">Add</button><button class = "add_del" onclick = "delRow();">Remove</button> -->
+				<button class = "submit_btn" id = "submit_btn" onclick="addUser();">Submit Classes</button>
+				<button class = "edit_btn" id = "edit_btn" onclick="edit();" style= "display:none">Edit Classes</button>
+
+			</div>
+			<div id = "classes_div" class = "six columns" style = "display: none">
+				<br><br>
+				<h2>Results</h2><br>
+				<h6>These results are only up to this moment. If there aren't many results, please check again at a later time. Thanks!</h6><br>
+				<div id = "classes" style = "display: none"></div>
+			</div>
+		</div>
+		<footer id="footer">
+			<p> Made by Nathan Ang and Michael Wan. Copyright © 2017. All rights reserved. </p>
+		</footer>
+	</body>
+	<script>
+		var database = firebase.database();
+	</script>
+	<script>
+		// instanciate new modal
+		var modal = new tingle.modal({
+			footer: true,
+			stickyFooter: false,
+			closeMethods: ['overlay', 'button', 'escape'],
+			closeLabel: "Close",
+			cssClass: ['custom-class-1', 'custom-class-2'],
+			onOpen: function() {
+				console.log('modal open');
+			},
+			onClose: function() {
+				console.log('modal closed');
+			},
+			beforeClose: function() {
+				// here's goes some logic
+				// e.g. save content before closing the modal
+				return true; // close the modal
+				return false; // nothing happens
+			}
+		});
+		// set content
+		modal.setContent('<h3>Add Your School: </h3><label for="add_school">'+
+						 'School: </label><input type = "text" size = "35" id = "add_school"></input><br><br>'+
+						 '<button onclick="setTimeout(addSchool(), 3000); location.reload();">Add</button>');
+		// open modal
+		document.getElementById('schoolnotfound').onclick = function() {
+			modal.open();
+		}
+	</script>
+	
+	<script>
+		function getUserCount(){
+			var ref = firebase.database().ref("users");
+			ref.once("value").then(function(snapshot) {
+				var l = snapshot.numChildren();
+				console.log("User Count: " + l);
+			});
+		}
+		function addSchool() {
+			val = document.getElementById('add_school').value;
+			if (val != "") {
+				document.getElementById('languages').innerHTML += "<option value = '" + _w(val) + "'>"
+				firebase.database().ref("school/" + val + "/").update({
+					__ignore: "_"
+				})
+			}
+			modal.setContent("<h3>Done! Reloading page...</h3>")
+			// await sleep(2000);
+		}
+	</script>
+	<script>
+		function edit() {
+			editUser(function(err, result) {
+				if (result) {
+					$('#edit_btn').css('display', 'disabled');
+					addUser();
+					location.reload();
+				}
+				else { /* do nothing */ }
+			});
+		}
+		function editUser(callback) {
+			high_school = $.trim(document.getElementById('hs').value);
+			name = $.trim(document.getElementById('first_name').value) + " " + $.trim(document.getElementById('last_name').value);
+			table = document.getElementById("periods");
+			classes = []
+			for (var i = 0; i < table.rows.length; i++) {
+				cur_row_val = document.getElementById('period' + (i+1)).value
+				classes.push($.trim(cur_row_val))
+			}
+			//var query = firebase.database().ref("users/" + name).orderByKey();
+			console.log("users/" + name + "/classes");
+			var ref = firebase.database().ref("users/" + name + "/classes");
+			var i = 0;
+			ref.once("value").then(function(snapshot) {
+				var l = snapshot.numChildren();
+				console.log(l);
+				snapshot.forEach(function(childSnapshot) {
+					// console.log("WOEFkl");
+					var key = childSnapshot.key;
+					console.log(childSnapshot.val() + "&period=" + (i+1));
+					clearStudent( (childSnapshot.val() + "&period=" + (i+1)) , high_school, name )
+					i++;
+				});
+				callback(null, true);
+			}, function(error) {
+				callback(error);
+			});
+			//addUser();
+		}
+		function clearStudent(c, high_school, name) {
+			var ref = firebase.database().ref("school/" + high_school + "/" + c).orderByKey();
+			var j = 1;
+			ref.once("value").then(function(snapshot) {
+				snapshot.forEach(function(childSnapshot) {
+					var key = childSnapshot.key;
+					//console.log(childSnapshot.val());
+					if(name === childSnapshot.val()) {
+						//console.log(j)
+						firebase.database().ref("school/" + high_school + "/" + c + "/").update({
+							[j]: ("blacklist" + name)
+						});
+					}
+					j++;
+				});
+			});
+		}
+		function writeUserData(name, high_school, classes) {
+			firebase.database().ref('users/' + name).set({
+				name: name,
+				high_school: high_school
+			})
+			for (var i = 0; i < classes.length; i++) {
+				if (classes[i] != "") {
+					classes[i] = process(classes[i], (i+1));
+					firebase.database().ref('users/' + name + '/classes/').update({
+						[i+1]: classes[i]
+					});	
+					secondData(name, high_school, classes[i] + "&period=" + (i+1));
+				}
+			}
+		}
+		function findStudent(){
+			console.log("findStudent()...");
+			high_school = $.trim(document.getElementById('hs').value);
+			name = $.trim(document.getElementById('first_name').value) + " " + $.trim(document.getElementById('last_name').value);
+			var ref = firebase.database().ref("users");
+			document.getElementById('classes').innerHTML = "";
+			ref.once("value").then(function(snapshot) {
+				var l = snapshot.numChildren();
+				//console.log(l);
+			});
+			document.getElementById('submit_btn').setAttribute('disabled', 'true');
+			$('#submit_btn').css('display', 'none');
+			$('#edit_btn').css('display', 'block');
+			var query = firebase.database().ref("users").orderByKey();
+
+			query.once("value").then(function(snapshot) {
+				snapshot.forEach(function(childSnapshot) {
+					// key will be "ada" the first time and "alan" the second time
+					var key = childSnapshot.key;
+					// childData will be the actual contents of the child
+					//var childData = childSnapshot.val();
+					//console.log(key.toString());
+					if(name === key) {
+						fetchStudent(name, high_school);
+					}
+				});
+			});
+		}
+		function fetchStudent(name, high_school){
+			console.log("fetchStudent()...");
+			var classdiv = document.getElementById('classes');
+			var ref = firebase.database().ref("users/" + name + "/school");
+			ref.once("value").then(function(snapshot) {
+				var high_school = snapshot.key; // "ada"
+			});
+			var query = firebase.database().ref("users/" + name + "/classes").orderByKey();
+			var i = 0;
+			var total_classes = 0;
+			getClasses(name, function (err, result) {
+				total_classes = result;
+				// console.log("callback func");
+				for (var j = 1; j <= document.getElementById('periods').rows.length; j++)
+					document.getElementById('period' + j).value = ''
+				num_needed = total_classes - document.getElementById('periods').rows.length;
+				if (num_needed < 0) {
+					for (var j = 0; j < -1*(num_needed); j++)
+						delRow();
+				}
+				else {
+					for (var j = 0; j < num_needed; j++)
+						addRow();
+				}
+				for (var j = 1; j <= total_classes; j++)
+					document.getElementById('period' + j).value = ''
+				query.once("value").then(function(snapshot) {
+					snapshot.forEach(function(childSnapshot) {
+						var c = childSnapshot.val();
+						//console.log(c);
+						document.getElementById('period' + (i+1)).value = c;
+						secondDataNoWrite(name, high_school, (c + "&period=" + (i+1)));
+						i++;
+					});
+				});
+				// console.log("total_classes: " + total_classes);
+				// console.log("callback func done");
+			});
+		}
+		
+		function secondDataNoWrite(name, high_school, c) {
+			var classdiv = document.getElementById('classes');
+			//console.log(c);
+			var x = "init";
+			var y = 0;
+			//var ref = firebase.database().ref("school/" + high_school + "/" + c);
+			var classdiv = document.getElementById('classes');
+			$('#classes_div').css('display', 'block');
+			$('#classes').css('display', 'block');
+			var l = 1;
+			period = c.substring(c.search("&period=") + "&period=".length);
+			classname = c.substring(0, c.search("&period="))
+			//console.log("Period: " + period);
+			// document.write("<br><br>" + classname + ", Period " + period + "<br><br>");
+			var last = "init"
+			var curr = "init"
+			var query = firebase.database().ref("school/" + high_school + "/" + c);
+			query.once("value").then(function(snapshot) {
+				//console.log(snapshot.numChildren());
+				if(snapshot.numChildren() == 0) {
+					period = c.substring(c.search("&period=") + "&period=".length);
+					classname = c.substring(0, c.search("&period="));
+					x = ("<h5><u>" + _w(classname) + ", Period " + _w(period) + ":</u><br></h5>");
+					//console.log(x);
+					classdiv.innerHTML += (x);
+					classdiv.innerHTML += ("<h6>None</h6>");
+				}
+				snapshot.forEach(function(childSnapshot) {
+					if(x === "init") {
+						period = c.substring(c.search("&period=") + "&period=".length);
+						classname = c.substring(0, c.search("&period="));
+						x = ("<h5><u>" + _w(classname) + ", Period " + _w(period) + ":</u></h5>");
+						// console.log(x);
+						classdiv.innerHTML += (x);
+					}
+					period = c.substring(c.search("&period=") + "&period=".length);
+					classname = c.substring(0, c.search("&period="));
+					x = ("<h5><u>" + classname + ", Period " + period + ":</u></h5>");
+					var key = childSnapshot.key;
+					var childData = childSnapshot.val();
+					curr = childData;
+					//classdiv.innerHTML += (" " + c + "<br>");
+					if(!(last === curr) && !(name === curr)) {
+						var onBlackList = false;
+						for(var j = 0; j < blacklist.length; j++) {
+							if(curr === blacklist[j]) {
+								onBlackList = true;
+							}
+						}
+						console.log(curr);
+						if(curr.includes("blacklist"))
+							onBlackList = true;
+						if(curr === null || curr === "null")
+							onBlackList = true;
+						if(!onBlackList) {
+							if (!curr.includes("<")) {
+								classdiv.innerHTML += (" " + _w(curr) + "<br>");
+							}
+						}
+					}
+					l++;
+					last = curr;
+				});
+				classdiv.innerHTML += ("<br>");
+			});
+		}
+		function getClasses(name, callback) {
+			var ref = firebase.database().ref("users/" + name + "/classes");
+			var l = 0;
+			ref.once("value").then(function(snapshot) {
+				l = snapshot.numChildren();;
+				callback(null, l);
+			}, function(error) {
+				callback(error);
+			});
+		}
+	</script>
+	<script>
+		function secondData(name, high_school, c) {
+			console.log(c);
+			var ref = firebase.database().ref("school/" + high_school + "/" + c);
+			var classdiv = document.getElementById('classes');
+			ref.once("value").then(function(snapshot) {
+				var l = snapshot.numChildren();
+				//console.log(l);
+				firebase.database().ref("school/" + high_school + "/" + c + "/").update({
+				 	[l+1]: name
+				})
+				people = []
+				period = c.substring(c.search("&period=") + "&period=".length);
+				classname = c.substring(0, c.search("&period="))
+				console.log("Period: " + period);
+				// document.write("<br><br>" + classname + ", Period " + period + "<br><br>");
+				classdiv.innerHTML += ("<h5><u>" + _w(classname) + ", Period " + _w(period) + ":</u><br></h5>");
+				var last = "init"
+				var curr = "init"
+				for(var i = 1; i < l+1; i++)
+				{
+					curr = snapshot.child(i.toString()).val();
+					people.push(snapshot.child(i.toString()).val());
+					console.log(snapshot.child(i.toString()).val());
+					console.log(last);
+					console.log(curr);
+					if(!(last===curr) && !(name === curr))
+					{
+						var onBlackList = false;
+						for(var j = 0; j < blacklist.length; j++)
+						{
+							if(curr === blacklist[j])
+							{
+								onBlackList = true;
+								console.log(name);
+								console.log(blacklist[j]);
+							}
+						}
+						console.log(curr);
+						if(curr === ("blacklist" + name))
+							onBlackList = true;
+						if(curr === null || curr === "null")
+							onBlackList = true;
+						if(!onBlackList) {
+							if (!curr.includes("<")) {
+								classdiv.innerHTML += (" " + _w(curr) + "<br>");
+							}
+						}
+					}
+					last = curr;
+					// document.write(snapshot.child(i.toString()).val() + "<br>");
+				}
+				mutual_class[c] = people
+				if (l == 0) {
+					classdiv.innerHTML += "<b>None</b><br>";
+				}
+				classdiv.innerHTML += "<br>"
+			});
+			$('#classes_div').css('display', 'block');
+			$('#classes').css('display', 'block');
+		}
+	</script>
+	<script>
+		function addUser() {
+			hs = capitalize($.trim(document.getElementById('hs').value));
+			name = capitalize($.trim(document.getElementById('first_name').value)) + " " + capitalize($.trim(document.getElementById('last_name').value));
+			table = document.getElementById("periods");
+			if (hs == '' || document.getElementById('first_name').value == '' || document.getElementById('last_name').value == '') {
+				alert("Not all forms were filled out. Please try again.");
+				return;
+			}
+			classes = []
+			for (var i = 0; i < table.rows.length; i++) {
+				cur_row_val = document.getElementById('period' + (i+1)).value
+				classes.push($.trim(cur_row_val))
+			}
+			//console.log(classes);
+			document.getElementById('classes').innerHTML = "";
+			document.getElementById('submit_btn').setAttribute('disabled', 'true');
+			writeUserData(name, hs, classes);
+		}
+		function addRow() {
+			table = document.getElementById("periods")
+			var len = table.rows.length;
+			var row = table.insertRow((len));
+			var new_cell = row.insertCell(0);
+
+			new_cell.innerHTML = "<td>" + (len+1) + ". <input type = 'text' size = '35' id = 'period" + (len+1) + "' required></td>";
+		}
+		function delRow() {
+			var len = document.getElementById("periods").rows.length;
+			document.getElementById("periods").deleteRow(len-1);
+		}
+		function readUserData() {
+			var data = [];
+			var ref = firebase.database().ref();
+			ref.on("value", function(snapshot) {
+				data.push(snapshot.val());
+			}, function (error) {
+				console.log("Error: " + error.code);
+			});
+			for(var i = 0; i < data.length; i++)
+				console.log(data[i]);	
+		}
+	</script>
+	<script>
+	document.getElementsByTagName('input').hs.addEventListener('keyup', function (e) {
+		updateList(this);
+	});
+	</script>
+	<script>
+		var num = 1;
+		// Get the input box
+		var textInput = document.getElementById('first_name');
+		// Init a timeout variable to be used below
+		var timeout = null;
+		// Listen for keystroke events
+		textInput.onkeyup = function (e) {
+			// Clear the timeout if it has already been set.
+			// This will prevent the previous task from executing
+			// if it has been less than <MILLISECONDS>
+			clearTimeout(timeout);
+			// Make a new timeout set to go off in 800ms
+			timeout = setTimeout(function () {
+				console.log('RUN #' + num);
+				num += 1;
+				findMatch();
+			}, 500);
+		};
+
+		function checkStudent(name, callback) {
+			userRef = firebase.database().ref("users/");
+			var ret = false;
+			userRef.once('value', function(snapshot) {
+				ret = snapshot.hasChild(name);
+				callback(null, ret);
+			}, function(error) {
+				callback(error);
+			});
+		}
+
+		function findMatch() {
+			setTimeout(function() {
+				hs = capitalize($.trim(document.getElementById('hs').value))
+				if (hs != "") {
+					name = capitalize($.trim(document.getElementById('first_name').value)) + " " + capitalize($.trim(document.getElementById('last_name').value));
+					// console.log("Name complete: " + name);
+					checkStudent(name, function(err, result) {
+						// console.log("Auto running checkStudent()...");
+						if (result) {
+							// console.log("Found student... Auto filling page.");
+							findStudent();
+						}
+						else {
+							//do nothing
+						}
+					})
+					// if checkStudent() {
+					// 	findStudent();
+					// }
+				}
+			},2000);
+		}
+	</script>
+	<script>
+		//setup before functions
+		var typingTimer; //timer identifier
+		var doneTypingInterval = 500; //time in ms, 5 second for example
+		var $input = $('#hs');
+
+		//on keyup, start the countdown
+		$input.on('keyup', function () {
+			clearTimeout(typingTimer);
+			console.log("STOP");
+			typingTimer = setTimeout(doneTyping, doneTypingInterval);
+		});
+
+		//on keydown, clear the countdown 
+		$input.on('keydown', function () {
+			console.log("START");
+			clearTimeout(typingTimer);
+		});
+
+		//user is "finished typing," do something
+		function doneTyping () {
+			if (not_found == true) {
+				$('#hs').css('border', '1px solid #f06033');
+				$('#schoolnotfound').css('display', 'inline');
+			}
+			else {
+				$('#hs').css('border', '1px solid #33C3F0');
+				// border: 1px solid ;
+				$('#schoolnotfound').css('display', 'none');	
+			}
+		}
+	</script>
+</html>
