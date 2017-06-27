@@ -12,6 +12,7 @@
 
 		<link rel="stylesheet" href="stylesheets/normalize.css"></link>
 		<link rel="stylesheet" href="stylesheets/skeleton.css"></link>
+		<script src="https://use.fontawesome.com/352eed41a5.js"></script>
 		<script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
 		<script src="https://www.gstatic.com/firebasejs/4.1.2/firebase-app.js"></script>
 		<script src="https://www.gstatic.com/firebasejs/4.1.2/firebase-auth.js"></script>
@@ -89,10 +90,23 @@
 				height: 0.25em;
 				margin-top: -0.25em;
 			}
+			#header {
+				/*clear: both;*/
+				/*position: relative;*/
+				z-index: 10;
+				/*height: 0.25em;*/
+				margin-btm: -0.25em;
+				/*width: 100%;*/
+				/*max-width: 100%;*/
+				/*margin-top: 2rem;*/
+				font-size: 75%;
+				text-align: center;
+			}
 		</style>
 	</head>
 
 	<body>
+		<header id = "header" style = "background-color: red; color: #eee"><span style = "float:right"><i id = 'delnotice' class="fa fa-times fa-2x" aria-hidden="true" onclick="$('#header').css('display', 'none');"></i></span>A couple hours ago, we had a slight data leak in our systems due to a now-resolved issue.<br>If your class schedule had been altered, please use the editing feature to revert back to your original schedule! Thank you for understanding!</header>
 		<div class = "container">
 			<div class = "six columns">
 				<!-- High School: <input type="text" id="hs" name="hs" placeholder="Monta Vista High School" selectBoxOptions="Monta Vista High School;Fremont High School;Cupertino High School; Homestead High School"><br> -->
@@ -154,7 +168,7 @@
 				</table>
 				<!-- <button class = "add_del" onclick = "addRow();">Add</button><button class = "add_del" onclick = "delRow();">Remove</button> -->
 				<button class = "submit_btn" id = "submit_btn" onclick="addUser();">Submit Classes</button>
-				<button class = "edit_btn" id = "edit_btn" onclick="edit();" style= "display:none">Edit Classes</button>
+				<button class = "edit_btn" id = "edit_btn" onclick="edit();" style= "display:none">Update Classes</button>
 
 			</div>
 			<div id = "classes_div" class = "six columns" style = "display: none">
@@ -307,6 +321,8 @@
 			document.getElementById('submit_btn').setAttribute('disabled', 'true');
 			$('#submit_btn').css('display', 'none');
 			$('#edit_btn').css('display', 'block');
+			$('#edit_btn').css('color', '#e59400');
+			$('#edit_btn').css('border', '1px solid #e59400');
 			var query = firebase.database().ref("users").orderByKey();
 
 			query.once("value").then(function(snapshot) {
