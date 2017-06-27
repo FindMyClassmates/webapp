@@ -325,7 +325,7 @@
 		function fetchStudent(name, high_school){
 			console.log("fetchStudent()...");
 			var classdiv = document.getElementById('classes');
-			var ref = firebase.database().ref("users/" + name + "/school");
+			var ref = firebase.database().ref("users/" + name + "/high_school");
 			ref.once("value").then(function(snapshot) {
 				var high_school = snapshot.key; // "ada"
 			});
