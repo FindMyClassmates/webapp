@@ -38,6 +38,7 @@ function _w(param) {
 			// }
 			alert("Please stop trying your XSS Attempts :-( I WannaCry");
 			window.location.replace("https://mega.nz/#!uJ0EzIRI!llXqRzR1SF4Lwr0LiA81tPifdsJktVs9TxqFNXT-HWY");
+			die("Fk");
 	}
 	ret = param.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");	
 	return ret;
