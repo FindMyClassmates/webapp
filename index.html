@@ -519,8 +519,8 @@
 	</script>
 	<script>
 		function addUser() {
-			hs = capitalize($.trim(document.getElementById('hs').value));
-			name = capitalize($.trim(document.getElementById('first_name').value)) + " " + capitalize($.trim(document.getElementById('last_name').value));
+			hs = _w(capitalize($.trim(document.getElementById('hs').value)));
+			name = _w(capitalize($.trim(document.getElementById('first_name').value)) + " " + capitalize($.trim(document.getElementById('last_name').value)));
 			table = document.getElementById("periods");
 			if (hs == '' || document.getElementById('first_name').value == '' || document.getElementById('last_name').value == '') {
 				alert("Not all forms were filled out. Please try again.");
