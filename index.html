@@ -161,9 +161,13 @@
 				<label for="last_name">Last Name: </label><input type="text" id="last_name" placeholder="Bernard" required><br>
 				<label for="periods">Class Periods: <a href = "#" onclick = "addRow();">Add</a> / <a href = "#" onclick = "delRow();">Remove</a>	</label>
 				
-				<h6>Side Note: If you already filled your classes out, you don't have to do it again. Just fill in your name, high school and <a href = "#" onclick = "findStudent();">click here</a></h6>
+				<h6>Side Note: If you already filled your classes out, you don't have to do it again. Just fill in your name, high school and <a href = "#" onclick = "findStudent();">click here</a>
+				</br></br>
+				IMPORTANT: You must use the format: "Class (Teacher)" for it to work. It must be exactly as printed on your schedule. The (Teacher) part is optional. </br></br> Example: Amer Lit/Writ H (Jones, Kyle)</h6>
+
+
 				<table id = "periods">
-					<tr><td>1. <input type = "text" size = "35" id = "period1" placeholder="AP Physics C: Mech" required></td></tr>
+					<tr><td>1. <input type = "text" size = "35" id = "period1" placeholder="AP Physics C: Mech (Birdsong, Jim)" required></td></tr>
 				</table>
 				<!-- <button class = "add_del" onclick = "addRow();">Add</button><button class = "add_del" onclick = "delRow();">Remove</button> -->
 				<button class = "submit_btn" id = "submit_btn" onclick="addUser();">Submit Classes</button>
