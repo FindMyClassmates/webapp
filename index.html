@@ -484,12 +484,12 @@
 					console.log(snapshot.child(i.toString()).val());
 					console.log(last);
 					console.log(curr);
-					if(!(last===curr) && !(name === curr))
+					if(!(last==curr) && !(name == curr))
 					{
 						var onBlackList = false;
 						for(var j = 0; j < blacklist.length; j++)
 						{
-							if(curr === blacklist[j])
+							if(curr == blacklist[j])
 							{
 								onBlackList = true;
 								console.log(name);
@@ -497,9 +497,9 @@
 							}
 						}
 						console.log(curr);
-						if(curr === ("blacklist" + name))
+						if(curr == ("blacklist" + name))
 							onBlackList = true;
-						if(curr === null || curr === "null")
+						if(curr == null || curr == "null")
 							onBlackList = true;
 						if(!onBlackList) {
 							if (!curr.includes("<")) {
