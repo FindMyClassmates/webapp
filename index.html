@@ -112,7 +112,7 @@
 				<!-- High School:  -->
 				<br><br>
 				<h1>Find My Classmates</h1>
-				<h6>Fill out the information and your schedule below (<span style = "color: #00e500"><b>with class names exactly as it is on your schedule sheet</b></span>) to find out who could be in the same class as you next year!</h6>
+				<h6>Fill out the information and your schedule class rooms below to find out who's in your classes this year!</h6>
 				<script>
 					getUserCount();
 					//var schools = ["Hi"];
@@ -161,13 +161,12 @@
 				<label for="last_name">Last Name: </label><input type="text" id="last_name" placeholder="Bernard" required><br>
 				<label for="periods">Class Periods: <a href = "#" onclick = "addRow();">Add</a> / <a href = "#" onclick = "delRow();">Remove</a>	</label>
 				
-				<h6>Side Note: If you already filled your classes out, you don't have to do it again. Just fill in your name, high school and <a href = "#" onclick = "findStudent();">click here</a>
+				<h6>Note: If you already filled your classes out, you don't have to do it again. Just fill in your name, high school and <a href = "#" onclick = "findStudent();">click here</a>
 				</br></br>
-				IMPORTANT: You must use the format: "Class (Teacher)" for it to work. It must be exactly as printed on your schedule. The (Teacher) part is optional. </br></br> Example: Amer Lit/Writ H (Jones, Kyle)</h6>
 
 
 				<table id = "periods">
-					<tr><td>1. <input type = "text" size = "35" id = "period1" placeholder="AP Physics C: Mech (Birdsong, Jim)" required></td></tr>
+					<tr><td>1. <input type = "text" size = "35" id = "period1" placeholder="C107" required></td></tr>
 				</table>
 				<!-- <button class = "add_del" onclick = "addRow();">Add</button><button class = "add_del" onclick = "delRow();">Remove</button> -->
 				<button class = "submit_btn" id = "submit_btn" onclick="addUser();">Submit Classes</button>
@@ -177,7 +176,7 @@
 			<div id = "classes_div" class = "six columns" style = "display: none">
 				<br><br>
 				<h2>Results</h2><br>
-				<h6>These results are only up to this moment. If there aren't many results, feel free to post this site on social media to get your classmates on and check again soon! Thank you!</h6><br>
+				<h6>These results are only up to this moment. If there aren't many results, feel free to post this site on social media to find more classmates! Thank you!</h6><br>
 				<div id = "classes" style = "display: none"></div>
 			</div>
 		</div>
@@ -231,7 +230,7 @@
 			val = document.getElementById('add_school').value;
 			if (val != "") {
 				document.getElementById('languages').innerHTML += "<option value = '" + _w(val) + "'>"
-				firebase.database().ref("school/" + val + "/").update({
+				firebase.database().ref("school2018/" + val + "/").update({
 					__ignore: "_"
 				})
 			}
@@ -259,9 +258,9 @@
 				cur_row_val = document.getElementById('period' + (i+1)).value
 				classes.push($.trim(cur_row_val))
 			}
-			//var query = firebase.database().ref("users/" + name).orderByKey();
-			console.log("users/" + name + "/classes");
-			var ref = firebase.database().ref("users/" + name + "/classes");
+			//var query = firebase.database().ref("users2018/" + name).orderByKey();
+			console.log("users2018/" + name + "/classes");
+			var ref = firebase.database().ref("users2018/" + name + "/classes");
 			var i = 0;
 			ref.once("value").then(function(snapshot) {
 				var l = snapshot.numChildren();
@@ -280,7 +279,7 @@
 			//addUser();
 		}
 		function clearStudent(c, high_school, name) {
-			var ref = firebase.database().ref("school/" + high_school + "/" + c).orderByKey();
+			var ref = firebase.database().ref("school2018/" + high_school + "/" + c).orderByKey();
 			var j = 1;
 			ref.once("value").then(function(snapshot) {
 				snapshot.forEach(function(childSnapshot) {
@@ -288,7 +287,7 @@
 					//console.log(childSnapshot.val());
 					if(name === childSnapshot.val()) {
 						//console.log(j)
-						firebase.database().ref("school/" + high_school + "/" + c + "/").update({
+						firebase.database().ref("school2018/" + high_school + "/" + c + "/").update({
 							[j]: ("blacklist" + name)
 						});
 					}
@@ -297,14 +296,14 @@
 			});
 		}
 		function writeUserData(name, high_school, classes) {
-			firebase.database().ref('users/' + name).set({
+			firebase.database().ref('users2018/' + name).set({
 				name: name,
 				high_school: high_school
 			})
 			for (var i = 0; i < classes.length; i++) {
 				if (classes[i] != "") {
 					classes[i] = process(classes[i], (i+1));
-					firebase.database().ref('users/' + name + '/classes/').update({
+					firebase.database().ref('users2018/' + name + '/classes/').update({
 						[i+1]: classes[i]
 					});	
 					secondData(name, high_school, classes[i] + "&period=" + (i+1));
@@ -348,7 +347,7 @@
 			// ref.once("value").then(function(snapshot) {
 			// 	var high_school = snapshot.key; // "ada"
 			// });
-			var query = firebase.database().ref("users/" + name + "/classes").orderByKey();
+			var query = firebase.database().ref("users2018/" + name + "/classes").orderByKey();
 			var i = 0;
 			var total_classes = 0;
 			getClasses(name, function (err, result) {
@@ -386,7 +385,7 @@
 			//console.log(c);
 			var x = "init";
 			var y = 0;
-			//var ref = firebase.database().ref("school/" + high_school + "/" + c);
+			//var ref = firebase.database().ref("school2018/" + high_school + "/" + c);
 			var classdiv = document.getElementById('classes');
 			$('#classes_div').css('display', 'block');
 			$('#classes').css('display', 'block');
@@ -397,7 +396,7 @@
 			// document.write("<br><br>" + classname + ", Period " + period + "<br><br>");
 			var last = "init"
 			var curr = "init"
-			var query = firebase.database().ref("school/" + high_school + "/" + c);
+			var query = firebase.database().ref("school2018/" + high_school + "/" + c);
 			query.once("value").then(function(snapshot) {
 				//console.log(snapshot.numChildren());
 				if(snapshot.numChildren() == 0) {
@@ -448,7 +447,7 @@
 			});
 		}
 		function getClasses(name, callback) {
-			var ref = firebase.database().ref("users/" + name + "/classes");
+			var ref = firebase.database().ref("users2018/" + name + "/classes");
 			var l = 0;
 			ref.once("value").then(function(snapshot) {
 				l = snapshot.numChildren();;
@@ -461,12 +460,12 @@
 	<script>
 		function secondData(name, high_school, c) {
 			console.log(c);
-			var ref = firebase.database().ref("school/" + high_school + "/" + c);
+			var ref = firebase.database().ref("school2018/" + high_school + "/" + c);
 			var classdiv = document.getElementById('classes');
 			ref.once("value").then(function(snapshot) {
 				var l = snapshot.numChildren();
 				//console.log(l);
-				firebase.database().ref("school/" + high_school + "/" + c + "/").update({
+				firebase.database().ref("school2018/" + high_school + "/" + c + "/").update({
 				 	[l+1]: name
 				})
 				people = []
@@ -589,7 +588,7 @@
 		};
 
 		function checkStudent(name, callback) {
-			userRef = firebase.database().ref("users/");
+			userRef = firebase.database().ref("users2018/");
 			var ret = false;
 			userRef.once('value', function(snapshot) {
 				ret = snapshot.hasChild(name);
