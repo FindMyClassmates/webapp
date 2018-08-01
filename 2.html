@@ -1,0 +1,165 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>FindMyClassmates</title>
+		<meta charset="utf-8" />
+		<meta property="og:image" content="og_icon.png">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="HandheldFriendly" content="True">
+		<meta name="author" content="Michael Wan & Nathan Ang">
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="icon" href="papericon.png">
+
+		<link rel="stylesheet" href="stylesheets/normalize.css"></link>
+		<link rel="stylesheet" href="stylesheets/skeleton.css"></link>
+		<script src="https://use.fontawesome.com/352eed41a5.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/4.1.2/firebase-app.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/4.1.2/firebase-auth.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/4.1.2/firebase-database.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/4.1.2/firebase-messaging.js"></script>
+		<script src="https://code.jquery.com/jquery-3.1.1.js" integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA=" crossorigin="anonymous"></script>
+		<script>
+			var blacklist="Yaboi lmao,LMAO JOKES,Rodrick Ang,Oreo Ang,Nang Ang,Test Test,N A,[object Object],Walloping Wilbow,Jimbo Smith,Peter Bernard,Nrio Aga,Bub Dub,Brock Turner,Anonymous Anonymous,Testperson1 Testes,Test Test,Kid Kid,Fed Edd,Ed Ang,blacklist,Choc Milk,B Ku,Ape Monkey,Abc Def,Amina Satya, ,A A,Tony Stark,Awsfsdaf Dsf,U M,Test User,Test User2,Test User3,Test User4,1 1,D J,Crol L,E E,Hi Hi,Hi Bye,Hoo Wee,Jafdlakdjf Adjflaksdf;lakdjf,K M,Lonzo Ball,Nigglet,Null,Peter Beee,Peter Beer,Peter Berber,Peter Berd,Peter Bernardd,Peter Berr,Peter Bert,Peter Boo,Peter Br2,Peter Brr,Peter Janaa,Peter Keek,Q Q,Que Por,Yaijdielnsksks Dijdkjdodks,Null,M V,U Q,Giulius Whomst'd've,Big Smoke,Bob Smith,April Scott,Prime Minister Angela Merkel,Bang Nang,Whaddup Peeps,L L,Pixie Dust,V K,Man Dude,- -,A B,A C,A Q,A T,Adfa Fadf,An L,Ayeeee Lmao,Baby Boo,Baguette,Blueman Jinz,Big Man Tyrone,Bleh Meh,F F,G G,G Gg,G Ggg,H A,H G,H H,Hj Jj,Hk Isos,Incog Nito,John Doe,John Feltona,John John,Just Why,Meep Meep,Peppy Boombros,Superdummy Therevenge,U Suck,Your Mom,_,a a,asd asd,AAA_uEIubJYo,An L,Asd As,Asdf Adsf,Asdf Asdf,Sdf Sdf,Dog Shite,Billy Bob,Boy Five,D B,D P,Dude Guy,Dude Person,Dumb Bmud,Dumer Dumer,Fqaf Asf,Hooli Banka,I_will_be_back Are_you_enjoying_my_game?_i_am,Incog 1234".split(","),
+config={apiKey:"AIzaSyAZiLyes4cOTRdN3dZJ98z7F9b8HEN6tL4",authDomain:"findmyclassmates-1adf9.firebaseapp.com",databaseURL:"https://findmyclassmates-1adf9.firebaseio.com",projectId:"findmyclassmates-1adf9",storageBucket:"findmyclassmates-1adf9.appspot.com",messagingSenderId:"282768540097"};firebase.initializeApp(config);mutual_class={};not_found=!1;function getUserCount(){firebase.database().ref("users2018").once("value").then(function(a){a=a.numChildren();console.log("User Count: "+a)})}getUserCount();
+var ref=firebase.database().ref("school2018");ref.once("value").then(function(a){a.numChildren()});var query=firebase.database().ref("school2018").orderByKey();query.once("value").then(function(a){a.forEach(function(a){a=a.key;document.getElementById("languages").innerHTML+='<option value = "'+a.toString()+'">'})});
+var database=firebase.database(),modal=new tingle.modal({footer:!0,stickyFooter:!1,closeMethods:["overlay","button","escape"],closeLabel:"Close",cssClass:["custom-class-1","custom-class-2"],onOpen:function(){console.log("modal open")},onClose:function(){console.log("modal closed")},beforeClose:function(){return!0}});modal.setContent('<h3>Add Your School: </h3><label for="add_school">School: </label><input type = "text" size = "35" id = "add_school"></input><br><br><button onclick="setTimeout(addSchool(), 3000); location.reload();">Add</button>');
+document.getElementById("schoolnotfound").onclick=function(){modal.open()};function getUserCount(){firebase.database().ref("users2018").once("value").then(function(a){a=a.numChildren();console.log("User Count: "+a)})}
+function addSchool(){val=document.getElementById("add_school").value;""!=val&&(document.getElementById("languages").innerHTML+="<option value = '"+_w(val)+"'>",firebase.database().ref("school2018/"+val+"/").update({__ignore:"_"}));modal.setContent("<h3>Done! Reloading page...</h3>")}function edit(){editUser(function(a,c){c&&($("#edit_btn").css("display","disabled"),addUser(),location.reload())})}
+function editUser(a){high_school=$.trim(document.getElementById("hs").value);name=$.trim(document.getElementById("first_name").value)+" "+$.trim(document.getElementById("last_name").value);table=document.getElementById("periods");classes=[];for(var c=0;c<table.rows.length;c++)cur_row_val=document.getElementById("period"+(c+1)).value,classes.push($.trim(cur_row_val));console.log("users2018/"+name+"/classes");var b=firebase.database().ref("users2018/"+name+"/classes");c=0;b.once("value").then(function(b){var d=
+b.numChildren();console.log(d);b.forEach(function(a){console.log(a.val()+"&period="+(c+1));clearStudent(a.val()+"&period="+(c+1),high_school,name);c++});a(null,!0)},function(b){a(b)})}function clearStudent(a,c,b){var d=1;firebase.database().ref("school2018/"+c+"/"+a).orderByKey().once("value").then(function(f){f.forEach(function(f){b===f.val()&&(f={},firebase.database().ref("school2018/"+c+"/"+a+"/").update((f[d]="blacklist"+b,f)));d++})})}
+function writeUserData(a,c,b){firebase.database().ref("users2018/"+a).set({name:a,high_school:c});for(var d=0;d<b.length;d++)if(""!=b[d]){b[d]=process(b[d],d+1);var f={};firebase.database().ref("users2018/"+a+"/classes/").update((f[d+1]=b[d],f));secondData(a,c,b[d]+"&period="+(d+1))}}
+function findStudent(){console.log("findStudent()...");high_school=$.trim(document.getElementById("hs").value);name=$.trim(document.getElementById("first_name").value)+" "+$.trim(document.getElementById("last_name").value);var a=firebase.database().ref("users2018");document.getElementById("classes").innerHTML="";a.once("value").then(function(a){a.numChildren()});document.getElementById("submit_btn").setAttribute("disabled","true");$("#submit_btn").css("display","none");$("#edit_btn").css("display",
+"block");$("#edit_btn").css("color","#e59400");$("#edit_btn").css("border","1px solid #e59400");firebase.database().ref("users2018").orderByKey().once("value").then(function(a){a.forEach(function(a){name===a.key&&fetchStudent(name,high_school)})})}
+function fetchStudent(a,c){console.log("fetchStudent()...");document.getElementById("classes");var b=firebase.database().ref("users2018/"+a+"/classes").orderByKey(),d=0,f=0;getClasses(a,function(m,h){f=h;for(var e=1;e<=document.getElementById("periods").rows.length;e++)document.getElementById("period"+e).value="";num_needed=f-document.getElementById("periods").rows.length;if(0>num_needed)for(e=0;e<-1*num_needed;e++)delRow();else for(e=0;e<num_needed;e++)addRow();for(e=1;e<=f;e++)document.getElementById("period"+
+e).value="";b.once("value").then(function(b){b.forEach(function(b){b=b.val();document.getElementById("period"+(d+1)).value=b;secondDataNoWrite(a,c,b+"&period="+(d+1));d++})})})}
+function secondDataNoWrite(a,c,b){var d=document.getElementById("classes"),f="init";d=document.getElementById("classes");$("#classes_div").css("display","block");$("#classes").css("display","block");var m=1;period=b.substring(b.search("&period=")+8);classname=b.substring(0,b.search("&period="));var h="init",e="init";firebase.database().ref("school2018/"+c+"/"+b).once("value").then(function(c){0==c.numChildren()&&(period=b.substring(b.search("&period=")+8),classname=b.substring(0,b.search("&period=")),
+f="<h5><u>"+_w(classname)+", Period "+_w(period)+":</u><br></h5>",d.innerHTML+=f,d.innerHTML+="<h6>None</h6>");c.forEach(function(c){"init"===f&&(period=b.substring(b.search("&period=")+8),classname=b.substring(0,b.search("&period=")),f="<h5><u>"+_w(classname)+", Period "+_w(period)+":</u></h5>",d.innerHTML+=f);period=b.substring(b.search("&period=")+8);classname=b.substring(0,b.search("&period="));f="<h5><u>"+classname+", Period "+period+":</u></h5>";e=c.val();if(h!==e&&a!==e){c=!1;for(var g=0;g<
+blacklist.length;g++)e===blacklist[g]&&(c=!0);console.log(e);e.includes("blacklist")&&(c=!0);if(null===e||"null"===e)c=!0;c||e.includes("<")||(d.innerHTML+=" "+_w(e)+"<br>")}m++;h=e});d.innerHTML+="<br>"})}function getClasses(a,c){var b=0;firebase.database().ref("users2018/"+a+"/classes").once("value").then(function(a){b=a.numChildren();c(null,b)},function(a){c(a)})}
+function secondData(a,c,b){console.log(b);var d=firebase.database().ref("school2018/"+c+"/"+b),f=document.getElementById("classes");d.once("value").then(function(d){var h=d.numChildren(),e={};firebase.database().ref("school2018/"+c+"/"+b+"/").update((e[h+1]=a,e));people=[];period=b.substring(b.search("&period=")+8);classname=b.substring(0,b.search("&period="));console.log("Period: "+period);f.innerHTML+="<h5><u>"+_w(classname)+", Period "+_w(period)+":</u><br></h5>";for(var g="init",k=1;k<h+1;k++){e=
+d.child(k.toString()).val();people.push(d.child(k.toString()).val());console.log(d.child(k.toString()).val());console.log(g);console.log(e);if(g!=e&&a!=e){g=!1;for(var l=0;l<blacklist.length;l++)e==blacklist[l]&&(g=!0,console.log(a),console.log(blacklist[l]));console.log(e);e=="blacklist"+a&&(g=!0);if(null==e||"null"==e)g=!0;g||e.includes("<")||(f.innerHTML+=" "+_w(e)+"<br>")}g=e}mutual_class[b]=people;0==h&&(f.innerHTML+="<b>None</b><br>");f.innerHTML+="<br>"});$("#classes_div").css("display","block");
+$("#classes").css("display","block")}
+function addUser(){hs=_w(capitalize($.trim(document.getElementById("hs").value)));name=_w(capitalize($.trim(document.getElementById("first_name").value))+" "+capitalize($.trim(document.getElementById("last_name").value)));table=document.getElementById("periods");if(""==hs||""==document.getElementById("first_name").value||""==document.getElementById("last_name").value)alert("Not all forms were filled out. Please try again.");else{classes=[];for(var a=0;a<table.rows.length;a++)cur_row_val=document.getElementById("period"+
+(a+1)).value,classes.push($.trim(cur_row_val));document.getElementById("classes").innerHTML="";document.getElementById("submit_btn").setAttribute("disabled","true");writeUserData(name,hs,classes)}}function addRow(){table=document.getElementById("periods");var a=table.rows.length;table.insertRow(a).insertCell(0).innerHTML="<td>"+(a+1)+". <input type = 'text' size = '35' id = 'period"+(a+1)+"' required></td>"}
+function delRow(){var a=document.getElementById("periods").rows.length;document.getElementById("periods").deleteRow(a-1)}function readUserData(){var a=[];firebase.database().ref().on("value",function(b){a.push(b.val())},function(a){console.log("Error: "+a.code)});for(var c=0;c<a.length;c++)console.log(a[c])}document.getElementsByTagName("input").hs.addEventListener("keyup",function(a){updateList(this)});var num=1,textInput=document.getElementById("first_name"),timeout=null;
+textInput.onkeyup=function(a){clearTimeout(timeout);timeout=setTimeout(function(){console.log("RUN #"+num);num+=1;findMatch()},500)};function checkStudent(a,c){userRef=firebase.database().ref("users2018/");var b=!1;userRef.once("value",function(d){b=d.hasChild(a);c(null,b)},function(a){c(a)})}
+function findMatch(){setTimeout(function(){hs=capitalize($.trim(document.getElementById("hs").value));""!=hs&&(name=capitalize($.trim(document.getElementById("first_name").value))+" "+capitalize($.trim(document.getElementById("last_name").value)),checkStudent(name,function(a,c){c&&findStudent()}))},2E3)}var typingTimer,doneTypingInterval=500,$input=$("#hs");$input.on("keyup",function(){clearTimeout(typingTimer);console.log("STOP");typingTimer=setTimeout(doneTyping,doneTypingInterval)});
+$input.on("keydown",function(){console.log("START");clearTimeout(typingTimer)});function doneTyping(){1==not_found?($("#hs").css("border","1px solid #f06033"),$("#schoolnotfound").css("display","inline")):($("#hs").css("border","1px solid #33C3F0"),$("#schoolnotfound").css("display","none"))};
+	</script>
+		<link rel="stylesheet" href="stylesheets/bootstrap_rows.css"/>
+		<link rel="stylesheet" href="stylesheets/modal.css"/>
+		<link rel="stylesheet" href="stylesheets/tingle.css">
+		<script src="js/helper.js"></script>
+		<script src="js/tingle.js"></script>
+		<script src="js/test.js"></script>
+		<style>
+
+			#schoolnotfound {
+				color: red;
+				font-size: 80%;
+			}
+			.submit_btn {
+				color: #1FC92F;
+				border: 1px solid #1FC92F;
+				/*transition: color 0.5s ease-in-out;*/
+				transition: background 0.5s ease-in-out;
+				/*transition: border 0.5s ease-in-out;*/
+			}
+			.submit_btn:hover {
+				color: #4ee65d;
+				border: 1px solid #4ee65d;
+			}
+			.submit_btn:disabled {
+				color: #707070;
+				border: 1px solid #707070;
+			}
+			html {
+				height: 100%;
+			}
+			body {
+				min-height: 100%;
+			}
+			.container {
+				min-height: 97.5vh;
+			}
+			#footer {
+				clear: both;
+				position: relative;
+				z-index: 10;
+				height: 0.25em;
+				margin-top: -0.25em;
+			}
+			#header {
+				/*clear: both;*/
+				/*position: relative;*/
+				z-index: 10;
+				/*height: 0.25em;*/
+				margin-btm: -0.25em;
+				/*width: 100%;*/
+				/*max-width: 100%;*/
+				/*margin-top: 2rem;*/
+				font-size: 75%;
+				text-align: center;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class = "container">
+			<div class = "six columns">
+				<!-- High School: <input type="text" id="hs" name="hs" placeholder="Monta Vista High School" selectBoxOptions="Monta Vista High School;Fremont High School;Cupertino High School; Homestead High School"><br> -->
+				<!-- High School:  -->
+				<br><br>
+				<h1><b>Find My Classmates</b></h1>
+				<h5>Fill out the information and your schedule class rooms below to find out who's in your classes this year!</h5><br>
+				<datalist id="languages"></datalist>
+				<label for="hs">High School: </label><input placeholder = "Monta Vista High School" type="text" id = "hs" size="35" list="languages" onkeyup="updateList();" oninput="updateInput();" required>
+				<a href = "#" id = "schoolnotfound" style = "display: none;">School Not Found?</a>
+				<!-- Trigger/Open The Modal -->
+				<!-- The Modal -->
+				<div id="addSchoolModal" class="modal">
+				  <!-- Modal content -->
+				  <div class="modal-content">
+					<div class="modal-header">
+					  <h2>Add Your School: </h2>
+					  <span class="close">&times;</span>
+					</div>
+					<div class="modal-body">
+					  <!-- <input id = 'add_school' type = 'text'></div> -->
+					  <p>School: </p>
+					  <p>Some other text...</p>
+					</div>
+					<div class="modal-footer">
+					  <h3>Modal Footer</h3>
+					</div>
+				  </div>
+				</div>
+				<label for="first_name">First Name: </label><input type="text" id="first_name" placeholder="Peter" required><br>
+				<label for="last_name">Last Name: </label><input type="text" id="last_name" placeholder="Bernard" required><br>
+				<label for="periods">Class Periods: <a href = "#" onclick = "addRow();">Add</a> / <a href = "#" onclick = "delRow();">Remove</a>	</label>
+				
+				<h6>Note: If you already filled your classes out, you don't have to do it again. Just fill in your name, high school and <a href = "#" onclick = "findStudent();">click here</a>
+				</br></br>
+
+
+				<table id = "periods">
+					<tr><td>1. <input type = "text" size = "35" id = "period1" placeholder='C107 (put "Empty" for free periods)' required></td></tr>
+				</table>
+				<!-- <button class = "add_del" onclick = "addRow();">Add</button><button class = "add_del" onclick = "delRow();">Remove</button> -->
+				<button class = "submit_btn" id = "submit_btn" onclick="addUser();">Submit Classes</button>
+				<button class = "edit_btn" id = "edit_btn" onclick="edit();" style= "display:none">Update Classes</button>
+
+			</div>
+			<div id = "classes_div" class = "six columns" style = "display: none">
+				<br><br>
+				<h2>Results</h2><br>
+				<h6>These results are only up to this moment. If there aren't many results, feel free to post this site on social media to find more classmates! Thank you!</h6><br>
+				<div id = "classes" style = "display: none"></div>
+			</div>
+		</div>
+		<footer id="footer">
+			<p> Made by Nathan Ang and Michael Wan. Copyright © 2018. All rights reserved. </p>
+		</footer>
+	</body>
+	
+</html>
