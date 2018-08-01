@@ -54,6 +54,10 @@ function process(class_name, period_num) {
 	}
 	if (ret.includes("Econ") && !(ret.includes("Economics"))) { ret = ret.replace("Econ", "Economics"); }
 	if (ret.includes("Calc") && !(ret.includes("Calculus"))) { ret = ret.replace("Calc", "Calculus"); }
+	// 2018 Override
+	if (ret.includes("Unscheduled")) {
+		ret = "Empty"
+	}
 	return ret;
 }
 
