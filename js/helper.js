@@ -19,6 +19,9 @@ function ordinal_suffix_of(i) {
 }
 function process(class_name, period_num) {
 	var ret = capitalize(class_name);
+	if (ret == "") {
+		ret = "Empty"
+	}
 	ret = ret.replace('Ap', 'AP');
 	ret = ret.replace('Bc', 'BC');
 	ret = ret.replace('Ab', 'AB');
